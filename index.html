@@ -50,7 +50,7 @@
         function showVideos(videos) {
             const grid = document.getElementById('videoGrid');
             grid.innerHTML = videos.map(v => `
-            <div class="video-card" onclick="loadVideo(this, '${v.id}')">
+            <div class="video-card" onclick="openVideo('${v.id}', '${encodeURIComponent(v.title)}')">
                 <div class="thumbnail-container">
                     <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="thumbnail">
                     <div class="play-btn"></div>
@@ -74,17 +74,24 @@
             showVideos(filtered);
         }
 
-        // 4. Lazy Load Iframe on click
+        // redirected player page
+        function openVideo(id, titleEncoded) {
+            // navigate to a dedicated video page with query params
+            window.location.href = `video.html?id=${id}&title=${titleEncoded}`;
+        }
+
+        // (legacy) lazy-load iframe if we ever need inline playback
         function loadVideo(card, id) {
             const container = card.querySelector('.thumbnail-container');
             container.innerHTML = `
             <iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; **fullscreen**" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" 
             allowfullscreen></iframe>`;
         }
 
         init();
     </script>
+    <hr>
     <footer>
         <p>Copyright &copy; 2026 Antariksha Ray</p>
     </footer>

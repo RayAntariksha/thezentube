@@ -38,7 +38,7 @@ body {
     width: 90%;
     max-width: 600px;
     padding: 15px 25px;
-    border-radius: 30px;
+    border-radius: 10px;
     border: 1px solid gray;
     background: #22242a;
     color: white;
@@ -47,7 +47,7 @@ body {
 }
 
 #searchBar:focus {
-    border: none;
+    border: 1px solid #22242a;
     box-shadow: 0px 0px 10px rgb(97, 97, 97);
 }
 
@@ -61,6 +61,7 @@ body {
 
 .video-card {
     background: var(--card-bg);
+    border: 1px solid #505050;
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.2s;
@@ -68,7 +69,8 @@ body {
 }
 
 .video-card:hover {
-    transform: translateY(-5px);
+    border: 1px solid #22242a;
+    box-shadow: 0px 0px 10px rgb(97, 97, 97);
 }
 
 .thumbnail-container {
@@ -155,7 +157,7 @@ footer {
     }
 
     #searchBar {
-        max-width: 100%;
+        max-width: 90%;
         padding: 12px 18px;
         font-size: 15px;
     }
@@ -191,7 +193,7 @@ footer {
     #searchBar {
         width: 100%;
         padding: 10px 14px;
-        border-radius: 20px;
+        border-radius: 10px;
         font-size: 14px;
     }
 
