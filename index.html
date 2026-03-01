@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Video Archive</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="/assets/logo.svg" alt="" id="logo">
+        <h1>Video Library</h1>
+        <input type="text" id="searchBar" placeholder="Search through 500+ videos..." oninput="handleSearch()">
+    </div>
+
+    <div class="video-grid" id="videoGrid"></div>
+
+    <script>
+        let allVideos = [];
+        
+        // 1. Load the data
+        async function init() {
+            try {
+                const response = await fetch('Database.txt');
+                const text = await response.text();
+                
+                allVideos = text.split('\n')
+                .filter(line => line.includes('|'))
+                .map(line => {
+                    const [id, ...titleParts] = line.split('|');
+                        return { id: id.trim(), title: titleParts.join('|').trim() };
+                    });
+
+                    // Show 12 random videos to start
+                showVideos(shuffle([...allVideos]).slice(0, 12));
+            } catch (e) {
+                document.getElementById('videoGrid').innerHTML = "Error loading videos.txt";
+            }
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+        
+        // 2. Render Videos
+        function showVideos(videos) {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = videos.map(v => `
+            <div class="video-card" onclick="loadVideo(this, '${v.id}')">
+                <div class="thumbnail-container">
+                    <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="thumbnail">
+                    <div class="play-btn"></div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${v.title}</div>
+                        </div>
+                        </div>
+                        `).join('');
+                    }
+                    
+        // 3. Search Logic
+        function handleSearch() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            if (query.length < 2) {
+                // If search is cleared, show a random set again
+                showVideos(allVideos.slice(0, 12));
+                return;
+            }
+            const filtered = allVideos.filter(v => v.title.toLowerCase().includes(query));
+            showVideos(filtered);
+        }
+
+        // 4. Lazy Load Iframe on click
+        function loadVideo(card, id) {
+            const container = card.querySelector('.thumbnail-container');
+            container.innerHTML = `
+            <iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; **fullscreen**" 
+            allowfullscreen></iframe>`;
+        }
+        
+        init();
+        </script>
+    <footer>
+        <p>Copyright &copy; 2026 Antariksha Ray</p>
+    </footer>
+</body>
+
+</html>
