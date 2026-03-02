@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
     <link rel="icon" href="assets/icon.svg" type="image/png">
     <title>ZenTube</title>
     <style>
@@ -13,11 +15,19 @@
 </head>
 
 <body>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/service-worker.js")
+                    .then(() => console.log("Service Worker Registered"));
+            });
+        }
+    </script>
     <div class="wallpaper-wrapper"></div>
 
     <div class="header">
         <a href="/index.html" style="text-decoration: none;">
-        <div class="logo-wrapper">
+            <div class="logo-wrapper">
 
                 <img src="/assets/icon.svg" alt="" id="logo">
                 <h1 style="text-decoration: none;">ZenTube</h1>
@@ -26,7 +36,7 @@
         <div class="welcome">
             <h1>Welcome to ZenTube</h1>
             <p>A collection of 500+ educational videos meant for removing distractions from your study sessions.</p>
-            <input type="text" id="searchBar" placeholder="Search through 500+ videos..." oninput="handleSearch()">
+            <input type="text" id="searchBar" placeholder="Search through 3000+ videos..." oninput="handleSearch()">
         </div>
     </div>
     <div class="video-grid" id="videoGrid"></div>
@@ -76,13 +86,21 @@
 
         // 3. Search Logic
         function handleSearch() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
+            const query = document.getElementById('searchBar').value.trim().toLowerCase();
+            // when there is no meaningful query show a fresh random set
             if (query.length < 2) {
-                // If search is cleared, show a random set again
-                showVideos(allVideos.slice(0, 12));
+                showVideos(shuffle([...allVideos]).slice(0, 12));
                 return;
             }
-            const filtered = allVideos.filter(v => v.title.toLowerCase().includes(query));
+
+            // break the query into individual words and match against the title
+            const terms = query.split(/\s+/).filter(Boolean);
+            const filtered = allVideos.filter(v => {
+                const title = v.title.toLowerCase();
+                // require that every term appears somewhere in the title
+                return terms.every(term => title.includes(term) || v.id.includes(term));
+            });
+
             showVideos(filtered);
         }
 
