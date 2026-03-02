@@ -24,7 +24,7 @@
         const id = params.get('id');
         const title = params.get('title');
         if (id) {
-            document.getElementById('videoPlayer').src = `https://www.youtube-nocookie.com/embed/${id}?rel=0?autoplay=1`;
+            document.getElementById('videoPlayer').src = `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=1`;
         }
         if (title) {
             document.getElementById('videoTitle').textContent = decodeURIComponent(title);

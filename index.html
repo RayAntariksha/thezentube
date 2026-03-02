@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/icon.svg" type="image/png">
     <title>ZenTube</title>
     <style>
 
@@ -12,11 +13,22 @@
 </head>
 
 <body>
+    <div class="wallpaper-wrapper"></div>
+
     <div class="header">
-        <img src="/assets/logo.svg" alt="" id="logo">
-        <input type="text" id="searchBar" placeholder="Search through 500+ videos..." oninput="handleSearch()">
+        <a href="/index.html" style="text-decoration: none;">
+        <div class="logo-wrapper">
+
+                <img src="/assets/icon.svg" alt="" id="logo">
+                <h1 style="text-decoration: none;">ZenTube</h1>
+            </div>
+        </a>
+        <div class="welcome">
+            <h1>Welcome to ZenTube</h1>
+            <p>A collection of 500+ educational videos meant for removing distractions from your study sessions.</p>
+            <input type="text" id="searchBar" placeholder="Search through 500+ videos..." oninput="handleSearch()">
+        </div>
     </div>
-    <hr>
     <div class="video-grid" id="videoGrid"></div>
 
     <script>
